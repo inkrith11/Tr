@@ -10,7 +10,8 @@ from .routers import (
     listings_router,
     messages_router,
     users_router,
-    reviews_router
+    reviews_router,
+    admin_router
 )
 
 # Create database tables
@@ -45,6 +46,7 @@ app.include_router(listings_router)
 app.include_router(messages_router)
 app.include_router(users_router)
 app.include_router(reviews_router)
+app.include_router(admin_router)
 
 
 @app.get("/")

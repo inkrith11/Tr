@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { login as apiLogin, register as apiRegister, googleLogin as apiGoogleLogin, getMe } from '../services/authService';
+import { login as apiLogin, register as apiRegister, googleLogin as apiGoogleLogin, googleLoginWithToken as apiGoogleLoginWithToken, getMe } from '../services/authService';
 import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
@@ -68,6 +68,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const handleGoogleLoginWithToken = async (accessToken) => {
+    try {
+      const { data } = await apiGoogleLoginWithToken(accessToken);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      setUser(data.user);
+      toast.success("Google login successful!");
+      return true;
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Google login failed. Only @apsit.edu.in emails allowed.");
+      throw error;
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -80,7 +94,8 @@ export const AuthProvider = ({ children }) => {
       user, 
       login, 
       register, 
-      handleGoogleLogin, 
+      handleGoogleLogin,
+      handleGoogleLoginWithToken, 
       logout, 
       loading, 
       isAuthenticated: !!user 

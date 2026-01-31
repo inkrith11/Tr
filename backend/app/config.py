@@ -14,6 +14,7 @@ class Settings:
     
     # Google OAuth
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
+    GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
     
     # Cloudinary
     CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "")
@@ -22,5 +23,12 @@ class Settings:
     
     # Email Domain
     ALLOWED_EMAIL_DOMAIN: str = os.getenv("ALLOWED_EMAIL_DOMAIN", "apsit.edu.in")
+    
+    # CORS
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    
+    @property
+    def CORS_ORIGINS(self):
+        return [self.FRONTEND_URL, "http://localhost:5173", "http://127.0.0.1:5173"]
 
 settings = Settings()

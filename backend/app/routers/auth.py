@@ -145,6 +145,78 @@ def google_login(auth_data: GoogleAuthRequest, db: Session = Depends(get_db)):
     )
 
 
+@router.post("/google-token", response_model=TokenResponse)
+def google_token_login(request: dict, db: Session = Depends(get_db)):
+    """
+    Login or register with Google OAuth access token.
+    Only @apsit.edu.in emails are allowed.
+    This endpoint is used by useGoogleLogin hook which returns access_token.
+    """
+    import httpx
+    
+    access_token = request.get('access_token')
+    if not access_token:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Access token is required"
+        )
+    
+    # Get user info from Google using the access token
+    try:
+        response = httpx.get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            headers={'Authorization': f'Bearer {access_token}'}
+        )
+        response.raise_for_status()
+        google_data = response.json()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid access token"
+        )
+    
+    email = google_data.get('email')
+    
+    # Validate email domain
+    if not email or not email.endswith('@apsit.edu.in'):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only @apsit.edu.in email addresses are allowed"
+        )
+    
+    # Check if user exists
+    user = db.query(User).filter(User.email == email).first()
+    
+    if not user:
+        # Create new user from Google data
+        user = User(
+            email=email,
+            name=google_data.get('name', ''),
+            google_id=google_data.get('sub'),
+            profile_picture=google_data.get('picture')
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        # Update Google ID and profile picture if not set
+        if not user.google_id:
+            user.google_id = google_data.get('sub')
+        if not user.profile_picture and google_data.get('picture'):
+            user.profile_picture = google_data.get('picture')
+        db.commit()
+        db.refresh(user)
+    
+    # Create access token
+    jwt_token = create_access_token(data={"sub": str(user.id)})
+    
+    return TokenResponse(
+        access_token=jwt_token,
+        token_type="bearer",
+        user=UserResponse.model_validate(user)
+    )
+
+
 @router.get("/me", response_model=UserResponse)
 def get_current_user_info(current_user: User = Depends(get_current_user)):
     """
