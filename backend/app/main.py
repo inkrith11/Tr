@@ -40,13 +40,13 @@ uploads_dir = Path("uploads")
 uploads_dir.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# Include routers
-app.include_router(auth_router)
-app.include_router(listings_router)
-app.include_router(messages_router)
-app.include_router(users_router)
-app.include_router(reviews_router)
-app.include_router(admin_router)
+# Include routers with /api prefix
+app.include_router(auth_router, prefix="/api")
+app.include_router(listings_router, prefix="/api")
+app.include_router(messages_router, prefix="/api")
+app.include_router(users_router, prefix="/api")
+app.include_router(reviews_router, prefix="/api")
+app.include_router(admin_router, prefix="/api")
 
 
 @app.get("/")
