@@ -64,8 +64,9 @@ const ListingCard = ({ listing, onFavoriteToggle, isFavorited }) => {
             <button 
               onClick={(e) => { e.preventDefault(); onFavoriteToggle(listing.id); }}
               className="text-red-500 hover:text-red-600 transition-colors"
+              aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
             >
-              {isFavorited ? <FaHeart className="h-5 w-5" /> : <FaRegHeart className="h-5 w-5" />}
+              {isFavorited ? <FaHeart className="h-5 w-5" aria-hidden="true" /> : <FaRegHeart className="h-5 w-5" aria-hidden="true" />}
             </button>
           )}
         </div>

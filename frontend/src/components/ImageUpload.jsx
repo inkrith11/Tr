@@ -44,8 +44,9 @@ const ImageUpload = ({ images, setImages, previews, setPreviews }) => {
               type="button"
               onClick={() => removeImage(imageKey)}
               className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+              aria-label={`Remove ${label} image`}
             >
-              <FaTimes className="h-4 w-4" />
+              <FaTimes className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         ) : (

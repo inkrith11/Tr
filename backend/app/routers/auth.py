@@ -87,6 +87,13 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
             detail="Invalid email or password"
         )
     
+    # Check if user is banned
+    if user.is_banned:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Your account has been banned"
+        )
+    
     # Create access token
     access_token = create_access_token(data={"sub": str(user.id)})
     

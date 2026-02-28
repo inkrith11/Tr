@@ -174,8 +174,9 @@ const Messages = () => {
                   <Link 
                     to="/messages" 
                     className="md:hidden mr-3 text-gray-600 hover:text-gray-900"
+                    aria-label="Back to conversations"
                   >
-                    <FaArrowLeft />
+                    <FaArrowLeft aria-hidden="true" />
                   </Link>
                   {selectedConversation?.profile_picture ? (
                     <img 
@@ -226,14 +227,16 @@ const Messages = () => {
                       value={messageText}
                       onChange={(e) => setMessageText(e.target.value)}
                       placeholder="Type a message..."
+                      aria-label="Type a message"
                       className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
                     />
                     <button
                       type="submit"
                       disabled={sending || !messageText.trim()}
                       className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark disabled:opacity-50 transition-colors"
+                      aria-label="Send message"
                     >
-                      <FaPaperPlane />
+                      <FaPaperPlane aria-hidden="true" />
                     </button>
                   </div>
                 </form>

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 from typing import Optional, List
 from datetime import datetime
 from enum import Enum
@@ -70,8 +70,7 @@ class ActivityItem(BaseModel):
     target_id: Optional[int] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============ USER MANAGEMENT ============
@@ -92,8 +91,7 @@ class AdminUserResponse(BaseModel):
     listing_count: int = 0
     reports_count: int = 0
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AdminUserDetail(AdminUserResponse):
@@ -153,8 +151,7 @@ class AdminListingResponse(BaseModel):
     reports_count: int = 0
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class HideListingRequest(BaseModel):
@@ -193,8 +190,7 @@ class ReportResponse(BaseModel):
     created_at: datetime
     resolved_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ReportDetailResponse(ReportResponse):
@@ -285,8 +281,7 @@ class CategoryResponse(BaseModel):
     listing_count: int = 0
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============ SETTINGS ============
@@ -302,8 +297,7 @@ class SettingResponse(BaseModel):
     description: Optional[str] = None
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============ ACTIVITY LOG ============
@@ -320,8 +314,7 @@ class ActivityLogResponse(BaseModel):
     ip_address: Optional[str] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ActivityLogListResponse(BaseModel):

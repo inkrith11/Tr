@@ -8,6 +8,7 @@ import ListingCard from '../components/ListingCard';
 import Loading from '../components/Loading';
 import { FaUserCircle, FaStar, FaMapMarkerAlt, FaCalendar, FaEdit } from 'react-icons/fa';
 import { format } from 'date-fns';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const Profile = () => {
       setListings(listingsRes.data);
       setReviews(reviewsRes.data);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      toast.error('Failed to load profile data.');
     } finally {
       setLoading(false);
     }

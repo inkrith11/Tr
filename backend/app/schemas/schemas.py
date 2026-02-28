@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 from typing import Optional, List
 from datetime import datetime
 from enum import Enum
@@ -28,10 +28,34 @@ class UserCreate(UserBase):
     name: str
     password: str
     phone: Optional[str] = None
-    
+
+    @field_validator('name')
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        v = v.strip()
+        if len(v) < 2 or len(v) > 100:
+            raise ValueError('Name must be between 2 and 100 characters')
+        return v
+
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters')
+        if len(v) > 128:
+            raise ValueError('Password must be at most 128 characters')
+        return v
+
+    @field_validator('phone')
+    @classmethod
+    def validate_phone(cls, v: Optional[str]) -> Optional[str]:
+        if v is not None and len(v) > 20:
+            raise ValueError('Phone number too long')
+        return v
+
     @field_validator('email')
     @classmethod
-    def validate_email_domain(cls, v):
+    def validate_email_domain(cls, v: str) -> str:
         if not v.endswith('@apsit.edu.in'):
             raise ValueError('Only @apsit.edu.in emails are allowed')
         return v
@@ -54,8 +78,7 @@ class UserResponse(BaseModel):
     profile_picture: Optional[str] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserProfileResponse(UserResponse):
@@ -87,6 +110,30 @@ class ListingBase(BaseModel):
     condition: str
     price: float
 
+    @field_validator('title')
+    @classmethod
+    def validate_title(cls, v: str) -> str:
+        v = v.strip()
+        if len(v) < 3 or len(v) > 200:
+            raise ValueError('Title must be between 3 and 200 characters')
+        return v
+
+    @field_validator('description')
+    @classmethod
+    def validate_description(cls, v: str) -> str:
+        if len(v) > 5000:
+            raise ValueError('Description must be at most 5000 characters')
+        return v
+
+    @field_validator('price')
+    @classmethod
+    def validate_price(cls, v: float) -> float:
+        if v < 0:
+            raise ValueError('Price cannot be negative')
+        if v > 1_000_000:
+            raise ValueError('Price exceeds maximum allowed')
+        return v
+
 
 class ListingCreate(ListingBase):
     pass  # Images handled separately via multipart form
@@ -98,8 +145,7 @@ class SellerInfo(BaseModel):
     email: str
     profile_picture: Optional[str] = None
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ListingResponse(BaseModel):
@@ -120,8 +166,7 @@ class ListingResponse(BaseModel):
     updated_at: Optional[datetime] = None
     is_favorited: bool = False
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ListingListResponse(BaseModel):
@@ -147,6 +192,16 @@ class MessageCreate(BaseModel):
     listing_id: int
     content: str
 
+    @field_validator('content')
+    @classmethod
+    def validate_content(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError('Message content cannot be empty')
+        if len(v) > 2000:
+            raise ValueError('Message must be at most 2000 characters')
+        return v
+
 
 class SenderInfo(BaseModel):
     id: int
@@ -154,8 +209,7 @@ class SenderInfo(BaseModel):
     email: str
     profile_picture: Optional[str] = None
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MessageResponse(BaseModel):
@@ -169,8 +223,7 @@ class MessageResponse(BaseModel):
     sender: Optional[SenderInfo] = None
     receiver: Optional[SenderInfo] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ConversationResponse(BaseModel):
@@ -207,8 +260,7 @@ class ReviewerInfo(BaseModel):
     email: str
     profile_picture: Optional[str] = None
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ReviewListingInfo(BaseModel):
@@ -216,8 +268,7 @@ class ReviewListingInfo(BaseModel):
     title: str
     image_url: Optional[str] = None
     
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ReviewResponse(BaseModel):
@@ -232,8 +283,7 @@ class ReviewResponse(BaseModel):
     reviewed_user: Optional[ReviewerInfo] = None
     listing: Optional[ReviewListingInfo] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============ Favorite Schemas ============
@@ -248,5 +298,4 @@ class FavoriteResponse(BaseModel):
     listing_id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Text, Enum
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Text, Enum, Index
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -120,6 +120,14 @@ class Listing(Base):
     reviews = relationship("Review", back_populates="listing")
     reports = relationship("Report", back_populates="listing", foreign_keys="Report.listing_id")
 
+    __table_args__ = (
+        Index("ix_listings_seller_id", "seller_id"),
+        Index("ix_listings_category", "category"),
+        Index("ix_listings_status", "status"),
+        Index("ix_listings_created_at", "created_at"),
+        Index("ix_listings_status_created", "status", "created_at"),
+    )
+
 
 class Message(Base):
     __tablename__ = "messages"
@@ -173,6 +181,10 @@ class Favorite(Base):
     # Relationships
     user = relationship("User", back_populates="favorites")
     listing = relationship("Listing", back_populates="favorites")
+
+    __table_args__ = (
+        Index("ix_favorites_user_listing", "user_id", "listing_id", unique=True),
+    )
 
 
 class Report(Base):

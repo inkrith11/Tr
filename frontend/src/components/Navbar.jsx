@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 font-sans sticky top-0 z-50">
+    <nav className="bg-white shadow-sm border-b border-gray-200 font-sans sticky top-0 z-50" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
@@ -36,8 +36,8 @@ const Navbar = () => {
                 <Link to="/create-listing" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                   Sell
                 </Link>
-                <Link to="/messages" className="text-gray-600 hover:text-gray-900 p-2 relative">
-                  <FaRegEnvelope className="h-6 w-6" />
+                <Link to="/messages" className="text-gray-600 hover:text-gray-900 p-2 relative" aria-label="Messages">
+                  <FaRegEnvelope className="h-6 w-6" aria-hidden="true" />
                 </Link>
                 
                 {/* Profile Dropdown */}
@@ -45,6 +45,9 @@ const Navbar = () => {
                   <button 
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     className="flex items-center text-gray-600 hover:text-gray-900 focus:outline-none"
+                    aria-label="User menu"
+                    aria-expanded={isDropdownOpen}
+                    aria-haspopup="true"
                   >
                     {user?.profile_picture ? (
                       <img 
@@ -111,8 +114,10 @@ const Navbar = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-600 hover:text-gray-900 focus:outline-none"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
             >
-              {isMenuOpen ? <FaTimes className="h-6 w-6" /> : <FaBars className="h-6 w-6" />}
+              {isMenuOpen ? <FaTimes className="h-6 w-6" aria-hidden="true" /> : <FaBars className="h-6 w-6" aria-hidden="true" />}
             </button>
           </div>
         </div>

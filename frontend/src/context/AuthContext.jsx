@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
           setUser(data);
           localStorage.setItem('user', JSON.stringify(data));
         } catch (error) {
-          console.error("Session expired", error);
+          // Session expired or invalid token — logout handles the toast
           logout();
         }
       }

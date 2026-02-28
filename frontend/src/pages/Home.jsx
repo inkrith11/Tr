@@ -4,6 +4,7 @@ import { getListings } from '../services/listingService';
 import ListingCard from '../components/ListingCard';
 import Loading from '../components/Loading';
 import { FaSearch, FaFilter } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const [listings, setListings] = useState([]);
@@ -33,7 +34,7 @@ const Home = () => {
       const { data } = await getListings(params);
       setListings(data);
     } catch (error) {
-      console.error("Failed to fetch listings", error);
+      toast.error('Failed to load listings. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -96,10 +97,11 @@ const Home = () => {
           {/* Search Bar */}
           <div className="flex gap-4 mb-4">
             <div className="flex-1 relative">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true" />
               <input
                 type="text"
                 placeholder="Search listings..."
+                aria-label="Search listings"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
@@ -127,6 +129,7 @@ const Home = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                aria-label="Category filter"
               >
                 <option value="">All Categories</option>
                 {categories.map(cat => (
@@ -138,6 +141,7 @@ const Home = () => {
                 value={condition}
                 onChange={(e) => setCondition(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                aria-label="Condition filter"
               >
                 <option value="">All Conditions</option>
                 {conditions.map(cond => (
@@ -150,6 +154,7 @@ const Home = () => {
               <input
                 type="number"
                 placeholder="Min Price"
+                aria-label="Minimum price"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
@@ -158,6 +163,7 @@ const Home = () => {
               <input
                 type="number"
                 placeholder="Max Price"
+                aria-label="Maximum price"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
@@ -167,6 +173,7 @@ const Home = () => {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                aria-label="Sort by"
               >
                 <option value="newest">Newest First</option>
                 <option value="price_low">Price: Low to High</option>

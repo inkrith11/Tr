@@ -1,7 +1,11 @@
 import api from './api';
 
-export const getUserProfile = (id) => api.get(`/users/profile/${id}`);
-export const updateProfile = (data) => api.put('/users/profile/update', data);
-export const addToFavorites = (listingId) => api.post('/users/favorites', { listing_id: listingId });
-export const removeFromFavorites = (listingId) => api.delete(`/users/favorites/${listingId}`);
-export const getFavorites = () => api.get('/users/favorites');
+export const getMyProfile = () => api.get('/users/me');
+export const getUserProfile = (id) => api.get(`/users/${id}`);
+export const updateProfile = (data) => {
+  return api.put('/users/me', data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+export const getUserListings = (userId) => api.get(`/users/${userId}/listings`);
+export const getUserReviews = (userId) => api.get(`/users/${userId}/reviews`);

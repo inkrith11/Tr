@@ -15,17 +15,17 @@ const Footer = () => {
               electronics, and accessories within your campus community.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <FaFacebook className="h-6 w-6" />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
+                <FaFacebook className="h-6 w-6" aria-hidden="true" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <FaTwitter className="h-6 w-6" />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+                <FaTwitter className="h-6 w-6" aria-hidden="true" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <FaInstagram className="h-6 w-6" />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
+                <FaInstagram className="h-6 w-6" aria-hidden="true" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <FaLinkedin className="h-6 w-6" />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="LinkedIn">
+                <FaLinkedin className="h-6 w-6" aria-hidden="true" />
               </a>
             </div>
           </div>

@@ -162,7 +162,7 @@ def get_all_users(
     search: Optional[str] = None,
     role: Optional[str] = None,
     status: Optional[str] = None,  # "active", "banned"
-    sort_by: Optional[str] = Query("newest", regex="^(newest|oldest|name|trades)$"),
+    sort_by: Optional[str] = Query("newest", pattern="^(newest|oldest|name|trades)$"),
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100)
 ):
@@ -428,7 +428,7 @@ def get_all_listings(
     status: Optional[str] = None,
     category: Optional[str] = None,
     has_reports: Optional[bool] = None,
-    sort_by: Optional[str] = Query("newest", regex="^(newest|oldest|price_high|price_low|reports)$"),
+    sort_by: Optional[str] = Query("newest", pattern="^(newest|oldest|price_high|price_low|reports)$"),
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100)
 ):
@@ -611,7 +611,7 @@ def get_all_reports(
     admin: User = Depends(get_admin_user),
     status: Optional[str] = None,
     report_type: Optional[str] = None,
-    sort_by: Optional[str] = Query("newest", regex="^(newest|oldest)$"),
+    sort_by: Optional[str] = Query("newest", pattern="^(newest|oldest)$"),
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100)
 ):

@@ -28,7 +28,7 @@ def get_listings(
     max_price: Optional[float] = None,
     condition: Optional[str] = None,
     search: Optional[str] = None,
-    sort_by: Optional[str] = Query("newest", regex="^(newest|oldest|price_low|price_high)$"),
+    sort_by: Optional[str] = Query("newest", pattern="^(newest|oldest|price_low|price_high)$"),
     page: int = Query(1, ge=1),
     limit: int = Query(12, ge=1, le=50)
 ):
@@ -208,7 +208,7 @@ async def update_listing(
     price: Optional[float] = Form(None),
     category: Optional[str] = Form(None),
     condition: Optional[str] = Form(None),
-    status: Optional[str] = Form(None),
+    listing_status: Optional[str] = Form(None, alias="status"),
     image1: Optional[UploadFile] = File(None),
     image2: Optional[UploadFile] = File(None),
     image3: Optional[UploadFile] = File(None),
@@ -243,8 +243,8 @@ async def update_listing(
         listing.category = category
     if condition:
         listing.condition = condition
-    if status:
-        listing.status = status
+    if listing_status:
+        listing.status = listing_status
     
     # Handle image updates
     if image1:
