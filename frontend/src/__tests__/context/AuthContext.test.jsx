@@ -85,7 +85,7 @@ describe('AuthContext', () => {
     mockGetMe.mockRejectedValue(new Error('no token'));
     mockApiLogin.mockResolvedValue({
       data: {
-        token: 'new-jwt',
+        access_token: 'new-jwt',
         user: { id: 2, name: 'Bob' },
       },
     });

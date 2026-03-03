@@ -34,10 +34,20 @@ class Settings:
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
     GOOGLE_CLIENT_SECRET: str = os.getenv("GOOGLE_CLIENT_SECRET", "")
 
-    # Cloudinary
+    # Cloudinary – treat placeholder values as unconfigured
     CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "")
     CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY", "")
     CLOUDINARY_API_SECRET: str = os.getenv("CLOUDINARY_API_SECRET", "")
+
+    @property
+    def cloudinary_configured(self) -> bool:
+        """Return True only when all three Cloudinary values are real."""
+        placeholders = {"", "your_cloud_name", "your_api_key", "your_api_secret"}
+        return (
+            self.CLOUDINARY_CLOUD_NAME not in placeholders
+            and self.CLOUDINARY_API_KEY not in placeholders
+            and self.CLOUDINARY_API_SECRET not in placeholders
+        )
 
     # Email Domain
     ALLOWED_EMAIL_DOMAIN: str = os.getenv("ALLOWED_EMAIL_DOMAIN", "apsit.edu.in")

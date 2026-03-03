@@ -7,6 +7,14 @@ import { toast } from 'react-toastify';
 import { FaUserCircle, FaMapMarkerAlt, FaEye, FaHeart, FaRegHeart, FaShare, FaFlag, FaTrash, FaEdit } from 'react-icons/fa';
 import { format } from 'date-fns';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+
+const getImageSrc = (url) => {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${BACKEND_URL}${url}`;
+};
+
 const ListingDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -17,7 +25,7 @@ const ListingDetails = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isFavorited, setIsFavorited] = useState(false);
 
-  const images = listing ? [listing.image_1, listing.image_2, listing.image_3].filter(Boolean) : [];
+  const images = listing ? [listing.image_url, listing.image_url_2, listing.image_url_3].filter(Boolean).map(getImageSrc) : [];
 
   useEffect(() => {
     fetchListing();
@@ -70,7 +78,7 @@ const ListingDetails = () => {
   if (loading) return <Loading />;
   if (!listing) return <div className="text-center py-12">Listing not found</div>;
 
-  const isOwner = user && listing.owner?.id === user.id;
+  const isOwner = user && listing.seller?.id === user.id;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -141,27 +149,27 @@ const ListingDetails = () => {
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Seller Information</h3>
             <div className="flex items-center">
-              {listing.owner?.profile_picture ? (
+              {listing.seller?.profile_picture ? (
                 <img 
-                  src={listing.owner.profile_picture} 
-                  alt={listing.owner.name} 
+                  src={getImageSrc(listing.seller.profile_picture)} 
+                  alt={listing.seller.name} 
                   className="h-12 w-12 rounded-full object-cover"
                 />
               ) : (
                 <FaUserCircle className="h-12 w-12 text-gray-400" />
               )}
               <div className="ml-3">
-                <p className="font-medium text-gray-900">{listing.owner?.name || 'Unknown User'}</p>
+                <p className="font-medium text-gray-900">{listing.seller?.name || 'Unknown User'}</p>
                 <div className="flex items-center text-sm text-gray-500">
-                  <span>⭐ {listing.owner?.rating?.toFixed(1) || '0.0'}</span>
+                  <span>⭐ {listing.seller?.rating?.toFixed(1) || '0.0'}</span>
                   <span className="mx-2">•</span>
-                  <span>{listing.owner?.total_trades || 0} trades</span>
+                  <span>{listing.seller?.total_trades || 0} trades</span>
                 </div>
               </div>
             </div>
             {!isOwner && (
               <Link 
-                to={`/profile/${listing.owner?.id}`}
+                to={`/profile/${listing.seller?.id}`}
                 className="mt-3 block text-center text-primary hover:text-primary-dark text-sm font-medium"
               >
                 View Profile
@@ -190,7 +198,7 @@ const ListingDetails = () => {
               <>
                 {isAuthenticated ? (
                   <Link
-                    to={`/messages/${listing.owner?.id}?listing=${listing.id}`}
+                    to={`/messages/${listing.seller?.id}?listing=${listing.id}`}
                     className="w-full flex items-center justify-center px-6 py-3 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
                   >
                     Contact Seller

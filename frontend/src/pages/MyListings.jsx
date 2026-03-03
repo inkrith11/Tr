@@ -7,6 +7,14 @@ import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaCheck, FaEye, FaPlus } from 'react-icons/fa';
 import { format } from 'date-fns';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+
+const getImageSrc = (url) => {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${BACKEND_URL}${url}`;
+};
+
 const MyListings = () => {
   const { user } = useAuth();
   const [listings, setListings] = useState([]);
@@ -140,7 +148,7 @@ const MyListings = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <img
-                        src={listing.image_1 || 'https://via.placeholder.com/50'}
+                        src={getImageSrc(listing.image_url) || 'https://via.placeholder.com/50'}
                         alt={listing.title}
                         className="h-12 w-12 rounded object-cover"
                       />

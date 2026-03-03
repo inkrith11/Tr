@@ -16,9 +16,9 @@ const Home = () => {
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [category, setCategory] = useState(searchParams.get('category') || '');
   const [condition, setCondition] = useState(searchParams.get('condition') || '');
-  const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
-  const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'newest');
+  const [minPrice, setMinPrice] = useState(searchParams.get('min_price') || '');
+  const [maxPrice, setMaxPrice] = useState(searchParams.get('max_price') || '');
+  const [sortBy, setSortBy] = useState(searchParams.get('sort_by') || 'newest');
 
   const categories = ['Books', 'Electronics', 'Stationery', 'Tools', 'Accessories', 'Other'];
   const conditions = ['new', 'like_new', 'good', 'fair', 'poor'];
@@ -32,7 +32,7 @@ const Home = () => {
     try {
       const params = Object.fromEntries(searchParams.entries());
       const { data } = await getListings(params);
-      setListings(data);
+      setListings(data.listings || []);
     } catch (error) {
       toast.error('Failed to load listings. Please try again.');
     } finally {
@@ -46,9 +46,9 @@ const Home = () => {
     if (search) params.set('search', search);
     if (category) params.set('category', category);
     if (condition) params.set('condition', condition);
-    if (minPrice) params.set('minPrice', minPrice);
-    if (maxPrice) params.set('maxPrice', maxPrice);
-    if (sortBy) params.set('sortBy', sortBy);
+    if (minPrice) params.set('min_price', minPrice);
+    if (maxPrice) params.set('max_price', maxPrice);
+    if (sortBy) params.set('sort_by', sortBy);
     setSearchParams(params);
   };
 

@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     try {
       const { data } = await apiLogin(credentials);
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       toast.success("Logged in successfully!");
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const { data } = await apiRegister(userData);
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       toast.success("Registration successful!");
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const handleGoogleLogin = async (credentialResponse) => {
     try {
       const { data } = await apiGoogleLogin(credentialResponse.credential);
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       toast.success("Google login successful!");
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
   const handleGoogleLoginWithToken = async (accessToken) => {
     try {
       const { data } = await apiGoogleLoginWithToken(accessToken);
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       toast.success("Google login successful!");

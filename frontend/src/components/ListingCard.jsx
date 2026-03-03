@@ -2,8 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserCircle, FaHeart, FaRegHeart } from 'react-icons/fa';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+
+const getImageSrc = (url) => {
+  if (!url) return null;
+  if (url.startsWith('http')) return url;
+  return `${BACKEND_URL}${url}`;
+};
+
 const ListingCard = ({ listing, onFavoriteToggle, isFavorited }) => {
-  const imageUrl = listing.image_1 || 'https://via.placeholder.com/300x200?text=No+Image';
+  const imageUrl = getImageSrc(listing.image_url) || 'https://via.placeholder.com/300x200?text=No+Image';
 
   const getConditionColor = (condition) => {
     const colors = {
@@ -48,16 +56,16 @@ const ListingCard = ({ listing, onFavoriteToggle, isFavorited }) => {
         
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center text-sm text-gray-500">
-            {listing.owner?.profile_picture ? (
+            {listing.seller?.profile_picture ? (
               <img 
-                src={listing.owner.profile_picture} 
+                src={getImageSrc(listing.seller.profile_picture)} 
                 className="h-6 w-6 rounded-full mr-2 object-cover" 
-                alt={listing.owner.name} 
+                alt={listing.seller.name} 
               />
             ) : (
               <FaUserCircle className="h-6 w-6 mr-2 text-gray-400" />
             )}
-            <span className="truncate max-w-[100px]">{listing.owner?.name || 'User'}</span>
+            <span className="truncate max-w-[100px]">{listing.seller?.name || 'User'}</span>
           </div>
           
           {onFavoriteToggle && (

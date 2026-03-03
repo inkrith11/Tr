@@ -9,8 +9,8 @@ const baseListing = {
   price: 450,
   category: 'Books',
   condition: 'good',
-  image_1: 'https://example.com/img.jpg',
-  owner: { id: 5, name: 'Alice', profile_picture: null },
+  image_url: 'https://example.com/img.jpg',
+  seller: { id: 5, name: 'Alice', profile_picture: null },
 };
 
 const renderCard = (props = {}) =>
@@ -53,8 +53,8 @@ describe('ListingCard component', () => {
     expect(detailLink).toBeDefined();
   });
 
-  it('renders placeholder image when image_1 is absent', () => {
-    const listing = { ...baseListing, image_1: null };
+  it('renders placeholder image when image_url is absent', () => {
+    const listing = { ...baseListing, image_url: null };
     render(
       <MemoryRouter>
         <ListingCard listing={listing} />

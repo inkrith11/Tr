@@ -46,11 +46,11 @@ const sampleListing = {
   status: 'available',
   views: 42,
   location: 'APSIT Campus',
-  image_1: 'https://example.com/img1.jpg',
-  image_2: 'https://example.com/img2.jpg',
-  image_3: null,
+  image_url: 'https://example.com/img1.jpg',
+  image_url_2: 'https://example.com/img2.jpg',
+  image_url_3: null,
   created_at: '2025-01-01T12:00:00',
-  owner: { id: 2, name: 'Seller', profile_picture: null },
+  seller: { id: 2, name: 'Seller', profile_picture: null },
 };
 
 const renderPage = () =>
@@ -107,7 +107,7 @@ describe('ListingDetails page', () => {
     renderPage();
     await waitFor(() => {
       const thumbs = screen.getAllByRole('button');
-      // at least 2 thumbnail buttons (image_1, image_2)
+      // at least 2 thumbnail buttons (image_url, image_url_2)
       expect(thumbs.length).toBeGreaterThanOrEqual(2);
     });
   });

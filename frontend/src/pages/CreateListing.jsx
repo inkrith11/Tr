@@ -37,10 +37,10 @@ const CreateListing = () => {
       formData.append('price', data.price);
       if (data.location) formData.append('location', data.location);
       
-      // Append images
-      formData.append('image_1', images.image_1);
-      formData.append('image_2', images.image_2);
-      formData.append('image_3', images.image_3);
+      // Append images (keys must match backend param names: image1, image2, image3)
+      formData.append('image1', images.image_1);
+      formData.append('image2', images.image_2);
+      formData.append('image3', images.image_3);
 
       await createListing(formData);
       toast.success("Listing created successfully!");

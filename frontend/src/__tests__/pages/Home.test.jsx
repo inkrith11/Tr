@@ -22,8 +22,8 @@ const sampleListings = [
     price: 300,
     category: 'Books',
     condition: 'good',
-    image_1: null,
-    owner: { id: 1, name: 'User1', profile_picture: null },
+    image_url: null,
+    seller: { id: 1, name: 'User1', profile_picture: null },
   },
   {
     id: 2,
@@ -31,8 +31,8 @@ const sampleListings = [
     price: 800,
     category: 'Electronics',
     condition: 'new',
-    image_1: null,
-    owner: { id: 2, name: 'User2', profile_picture: null },
+    image_url: null,
+    seller: { id: 2, name: 'User2', profile_picture: null },
   },
 ];
 
@@ -55,7 +55,7 @@ describe('Home page', () => {
   });
 
   it('renders listings after fetch', async () => {
-    getListings.mockResolvedValue({ data: sampleListings });
+    getListings.mockResolvedValue({ data: { listings: sampleListings, total: 2, page: 1, pages: 1 } });
     renderHome();
     await waitFor(() => {
       expect(screen.getByText('Textbook')).toBeInTheDocument();
@@ -73,7 +73,7 @@ describe('Home page', () => {
   });
 
   it('renders search and filter UI', async () => {
-    getListings.mockResolvedValue({ data: [] });
+    getListings.mockResolvedValue({ data: { listings: [], total: 0, page: 1, pages: 0 } });
     renderHome();
     await waitFor(() => {
       expect(screen.getByPlaceholderText(/search listings/i)).toBeInTheDocument();

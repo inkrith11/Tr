@@ -11,13 +11,15 @@ from ..config import settings
 
 logger = logging.getLogger(__name__)
 
-# Configure Cloudinary if credentials are provided
-if settings.CLOUDINARY_CLOUD_NAME:
+# Configure Cloudinary if real credentials are provided
+if settings.cloudinary_configured:
     cloudinary.config(
         cloud_name=settings.CLOUDINARY_CLOUD_NAME,
         api_key=settings.CLOUDINARY_API_KEY,
         api_secret=settings.CLOUDINARY_API_SECRET
     )
+else:
+    logger.info("Cloudinary not configured – using local file storage")
 
 # Local upload directory
 UPLOAD_DIR = Path("uploads").resolve()
@@ -65,7 +67,7 @@ async def upload_image(file: UploadFile, folder: str = "listings") -> Optional[s
     unique_filename = f"{uuid.uuid4().hex}.{ext}"
 
     # If Cloudinary is configured, use it
-    if settings.CLOUDINARY_CLOUD_NAME:
+    if settings.cloudinary_configured:
         try:
             result = cloudinary.uploader.upload(
                 content,
@@ -109,7 +111,7 @@ def delete_image(image_url: str) -> bool:
     if not image_url:
         return False
 
-    if settings.CLOUDINARY_CLOUD_NAME and 'cloudinary' in image_url:
+    if settings.cloudinary_configured and 'cloudinary' in image_url:
         try:
             parts = image_url.split('/')
             public_id = '/'.join(parts[-3:])[:-4]  # Remove extension
