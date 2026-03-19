@@ -15,7 +15,8 @@ from .routers import (
     messages_router,
     users_router,
     reviews_router,
-    admin_router
+    admin_router,
+    reports_router
 )
 
 # Configure logging
@@ -83,6 +84,7 @@ app.include_router(messages_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(reviews_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
+app.include_router(reports_router, prefix="/api")
 
 
 @app.get("/")

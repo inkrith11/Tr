@@ -16,7 +16,13 @@ export const updateListing = (id, data) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
-export const markAsSold = (id) => api.put(`/listings/${id}`, { status: 'sold' });
+export const markAsSold = (id) => {
+  const formData = new FormData();
+  formData.append('status', 'sold');
+  return api.put(`/listings/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
 export const addFavorite = (listingId) => api.post(`/listings/${listingId}/favorite`);
 export const removeFavorite = (listingId) => api.delete(`/listings/${listingId}/favorite`);
 export const getMyFavorites = () => api.get('/listings/favorites/me');

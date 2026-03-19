@@ -4,6 +4,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
 import { setAdminToken, setAdminUser, getAdminToken } from '../../services/adminService';
+import { FaShieldAlt } from 'react-icons/fa';
 
 const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const AdminLogin = () => {
 
         // Now verify if this user is an admin
         const token = authResponse.data.access_token;
-        
+
         // Check admin status using the token
         const verifyResponse = await api.get('/admin/verify', {
           headers: { Authorization: `Bearer ${token}` }
@@ -63,38 +64,41 @@ const AdminLogin = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-10 text-center">
-          <div className="text-5xl mb-4">🛡️</div>
-          <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
-          <p className="text-indigo-200 mt-2">APSIT TradeHub Administration</p>
-        </div>
-
-        {/* Login Section */}
-        <div className="px-8 py-8">
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm text-center">{error}</p>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gray-900 px-8 py-10 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-emerald-500 rounded-2xl flex items-center justify-center">
+              <FaShieldAlt className="text-white text-2xl" />
             </div>
-          )}
-
-          <div className="text-center mb-6">
-            <p className="text-gray-600 text-sm">
-              Sign in with your <strong>@apsit.edu.in</strong> admin account
-            </p>
+            <h1 className="text-2xl font-bold text-white">Admin Portal</h1>
+            <p className="text-gray-400 mt-2">APSIT TradeHub Administration</p>
           </div>
 
-          {loading ? (
-            <div className="flex justify-center py-4">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+          {/* Login Section */}
+          <div className="px-8 py-8">
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <p className="text-red-600 text-sm text-center">{error}</p>
+              </div>
+            )}
+
+            <div className="text-center mb-6">
+              <p className="text-gray-600 text-sm">
+                Sign in with your <strong>@apsit.edu.in</strong> admin account
+              </p>
             </div>
-          ) : (
-            <div className="flex justify-center">
+
+            {loading ? (
+              <div className="flex justify-center py-4">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+              </div>
+            ) : (
               <button
                 onClick={() => handleGoogleLogin()}
-                className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
+                className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-white border-2 border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -104,23 +108,22 @@ const AdminLogin = () => {
                 </svg>
                 <span className="font-medium text-gray-700">Sign in with Google</span>
               </button>
+            )}
+
+            <div className="mt-8 p-4 bg-amber-50 border border-amber-100 rounded-xl">
+              <p className="text-amber-700 text-xs text-center">
+                Only users with <strong>Admin</strong> or <strong>Super Admin</strong> role can access this panel.
+              </p>
             </div>
-          )}
 
-          <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-            <p className="text-amber-800 text-xs text-center">
-              ⚠️ Only users with <strong>Admin</strong> or <strong>Super Admin</strong> role can access this panel.
-              Contact a Super Admin if you need access.
-            </p>
-          </div>
-
-          <div className="mt-6 text-center">
-            <a 
-              href="/" 
-              className="text-sm text-gray-600 hover:text-indigo-600 transition-colors"
-            >
-              ← Back to TradeHub
-            </a>
+            <div className="mt-6 text-center">
+              <a
+                href="/"
+                className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                ← Back to TradeHub
+              </a>
+            </div>
           </div>
         </div>
       </div>

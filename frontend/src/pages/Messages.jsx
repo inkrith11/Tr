@@ -32,7 +32,7 @@ const Messages = () => {
   }, []);
 
   useEffect(() => {
-    if (userId) {
+    if (userId && listingId) {
       fetchMessages(userId);
       // Poll for new messages every 3 seconds
       pollIntervalRef.current = setInterval(() => {
@@ -44,7 +44,7 @@ const Messages = () => {
         clearInterval(pollIntervalRef.current);
       }
     };
-  }, [userId]);
+  }, [userId, listingId]);
 
   useEffect(() => {
     scrollToBottom();
@@ -63,10 +63,21 @@ const Messages = () => {
 
   const fetchMessages = async (recipientId, silent = false) => {
     try {
-      const { data } = await getConversationMessages(recipientId);
-      setMessages(data.messages || []);
-      if (data.other_user) {
-        setSelectedConversation(data.other_user);
+      if (!listingId) {
+        if (!silent) console.error('No listing ID provided');
+        return;
+      }
+      const { data } = await getConversationMessages(recipientId, listingId);
+      setMessages(data || []);
+
+      // Find the conversation to get user details
+      const conv = conversations.find(c => c.other_user_id === parseInt(recipientId));
+      if (conv) {
+        setSelectedConversation({
+          id: conv.other_user_id,
+          name: conv.other_user_name,
+          profile_picture: conv.other_user_profile_picture
+        });
       }
     } catch (error) {
       if (!silent) console.error('Failed to fetch messages:', error);
@@ -75,14 +86,14 @@ const Messages = () => {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!messageText.trim() || !userId) return;
+    if (!messageText.trim() || !userId || !listingId) return;
 
     setSending(true);
     try {
       await sendMessage({
         receiver_id: parseInt(userId),
         content: messageText.trim(),
-        listing_id: listingId ? parseInt(listingId) : null
+        listing_id: parseInt(listingId)
       });
       setMessageText('');
       fetchMessages(userId);
@@ -110,6 +121,16 @@ const Messages = () => {
 
   if (loading) return <Loading />;
 
+  if (!user) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white shadow rounded-lg p-8 text-center">
+          <p className="text-gray-500">Please log in to view messages</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white shadow rounded-lg overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
@@ -123,16 +144,16 @@ const Messages = () => {
               {conversations.length > 0 ? (
                 conversations.map(conv => (
                   <Link
-                    key={conv.user.id}
-                    to={`/messages/${conv.user.id}`}
+                    key={`${conv.other_user_id}-${conv.listing_id}`}
+                    to={`/messages/${conv.other_user_id}?listing=${conv.listing_id}`}
                     className={`flex items-center p-4 hover:bg-gray-50 border-b border-gray-100 ${
-                      parseInt(userId) === conv.user.id ? 'bg-blue-50' : ''
+                      parseInt(userId) === conv.other_user_id ? 'bg-blue-50' : ''
                     }`}
                   >
-                    {conv.user.profile_picture ? (
-                      <img 
-                        src={conv.user.profile_picture} 
-                        alt={conv.user.name}
+                    {conv.other_user_profile_picture ? (
+                      <img
+                        src={conv.other_user_profile_picture}
+                        alt={conv.other_user_name}
                         className="h-12 w-12 rounded-full object-cover"
                       />
                     ) : (
@@ -140,13 +161,13 @@ const Messages = () => {
                     )}
                     <div className="ml-3 flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <p className="font-medium text-gray-900 truncate">{conv.user.name}</p>
+                        <p className="font-medium text-gray-900 truncate">{conv.other_user_name}</p>
                         <p className="text-xs text-gray-400">
-                          {conv.last_message?.created_at && formatMessageTime(conv.last_message.created_at)}
+                          {conv.last_message_time && formatMessageTime(conv.last_message_time)}
                         </p>
                       </div>
                       <p className="text-sm text-gray-500 truncate">
-                        {conv.last_message?.content || 'No messages yet'}
+                        {conv.last_message || 'No messages yet'}
                       </p>
                     </div>
                     {conv.unread_count > 0 && (
@@ -195,7 +216,7 @@ const Messages = () => {
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                   {messages.map((msg, index) => {
-                    const isOwn = msg.sender_id === user.id;
+                    const isOwn = user && msg.sender_id === user.id;
                     return (
                       <div
                         key={msg.id || index}
@@ -229,16 +250,22 @@ const Messages = () => {
                       placeholder="Type a message..."
                       aria-label="Type a message"
                       className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                      disabled={!listingId}
                     />
                     <button
                       type="submit"
-                      disabled={sending || !messageText.trim()}
+                      disabled={sending || !messageText.trim() || !listingId}
                       className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark disabled:opacity-50 transition-colors"
                       aria-label="Send message"
                     >
                       <FaPaperPlane aria-hidden="true" />
                     </button>
                   </div>
+                  {!listingId && (
+                    <p className="text-sm text-red-600 mt-2">
+                      Cannot send message: Missing listing information
+                    </p>
+                  )}
                 </form>
               </>
             ) : (

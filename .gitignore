@@ -25,8 +25,7 @@ build/
 Thumbs.db
 
 # Logs
-*.log
-npm-debug.log*
+ 
 
 # Testing
 coverage/

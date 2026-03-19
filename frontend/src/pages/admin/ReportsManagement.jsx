@@ -60,8 +60,8 @@ const ReportsManagement = () => {
 
   const getTypeBadge = (type) => {
     const badges = {
-      user: { text: '👤 User', class: 'bg-purple-100 text-purple-700' },
-      listing: { text: '📦 Listing', class: 'bg-indigo-100 text-indigo-700' },
+      user: { text: '👤 User', class: 'bg-cyan-100 text-cyan-700' },
+      listing: { text: '📦 Listing', class: 'bg-sky-100 text-sky-700' },
       message: { text: '💬 Message', class: 'bg-pink-100 text-pink-700' }
     };
     return badges[type] || { text: type, class: 'bg-gray-100 text-gray-700' };
@@ -99,7 +99,7 @@ const ReportsManagement = () => {
           <select
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
           >
             <option value="">All Status</option>
             <option value="pending">Pending</option>
@@ -110,7 +110,7 @@ const ReportsManagement = () => {
           <select
             value={filters.report_type}
             onChange={(e) => setFilters({ ...filters, report_type: e.target.value })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
           >
             <option value="">All Types</option>
             <option value="user">User Reports</option>
@@ -120,7 +120,7 @@ const ReportsManagement = () => {
           <select
             value={filters.sort_by}
             onChange={(e) => setFilters({ ...filters, sort_by: e.target.value })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
@@ -132,7 +132,7 @@ const ReportsManagement = () => {
       <div className="space-y-4">
         {loading ? (
           <div className="bg-white rounded-xl shadow-sm flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           </div>
         ) : reports.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm text-center py-12 text-gray-500">
@@ -226,7 +226,7 @@ const ReportsManagement = () => {
                           setSelectedReport(report);
                           setShowReviewModal(true);
                         }}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                        className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
                       >
                         Review
                       </button>
@@ -298,7 +298,7 @@ const ReportsManagement = () => {
                 <select
                   value={reviewData.status}
                   onChange={(e) => setReviewData({ ...reviewData, status: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
                 >
                   <option value="reviewing">Mark as Reviewing</option>
                   <option value="resolved">Resolve (Action Taken)</option>
@@ -315,7 +315,7 @@ const ReportsManagement = () => {
                   onChange={(e) => setReviewData({ ...reviewData, admin_notes: e.target.value })}
                   placeholder="Add notes about your review..."
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
                 />
               </div>
 
@@ -327,7 +327,7 @@ const ReportsManagement = () => {
                   <select
                     value={reviewData.action_taken}
                     onChange={(e) => setReviewData({ ...reviewData, action_taken: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
                   >
                     <option value="">Select action...</option>
                     <option value="warning_issued">Warning Issued</option>
@@ -354,7 +354,7 @@ const ReportsManagement = () => {
               <button
                 onClick={handleReview}
                 disabled={actionLoading}
-                className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                className="px-4 py-2 text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50"
               >
                 {actionLoading ? 'Saving...' : 'Save Review'}
               </button>

@@ -110,7 +110,7 @@ const UsersManagement = () => {
 
   const getRoleBadge = (role) => {
     const badges = {
-      super_admin: { text: '👑 Super Admin', class: 'bg-purple-100 text-purple-700' },
+      super_admin: { text: '👑 Super Admin', class: 'bg-amber-100 text-amber-700' },
       admin: { text: '🔧 Admin', class: 'bg-blue-100 text-blue-700' },
       user: { text: '👤 User', class: 'bg-gray-100 text-gray-700' }
     };
@@ -133,7 +133,7 @@ const UsersManagement = () => {
             placeholder="Search by name or email..."
             value={filters.search}
             onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
           />
           <select
             value={filters.role}
@@ -170,7 +170,7 @@ const UsersManagement = () => {
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           </div>
         ) : users.length === 0 ? (
           <div className="text-center py-12 text-gray-500">No users found</div>
@@ -195,7 +195,7 @@ const UsersManagement = () => {
                     <tr key={user.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                         <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
+                          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-semibold">
                             {user.name?.charAt(0).toUpperCase() || '?'}
                           </div>
                           <div className="ml-3">
@@ -261,7 +261,7 @@ const UsersManagement = () => {
                                   setNewRole(user.role);
                                   setShowRoleModal(true);
                                 }}
-                                className="px-3 py-1 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200"
+                                className="px-3 py-1 text-sm bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200"
                               >
                                 Role
                               </button>
@@ -328,7 +328,7 @@ const UsersManagement = () => {
                   onChange={(e) => setBanReason(e.target.value)}
                   placeholder="Enter reason..."
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
                 />
               </div>
               <div>
@@ -340,7 +340,7 @@ const UsersManagement = () => {
                   value={banDuration}
                   onChange={(e) => setBanDuration(e.target.value)}
                   placeholder="Leave empty for permanent ban"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
                 />
               </div>
             </div>
@@ -373,7 +373,7 @@ const UsersManagement = () => {
             <select
               value={newRole}
               onChange={(e) => setNewRole(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900"
             >
               <option value="user">User</option>
               <option value="admin">Admin</option>
@@ -389,7 +389,7 @@ const UsersManagement = () => {
               <button
                 onClick={handleRoleChange}
                 disabled={actionLoading}
-                className="px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700 disabled:opacity-50"
+                className="px-4 py-2 text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50"
               >
                 {actionLoading ? 'Saving...' : 'Change Role'}
               </button>

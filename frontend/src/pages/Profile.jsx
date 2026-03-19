@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getUserProfile } from '../services/userService';
 import { getUserListings } from '../services/listingService';
 import { getUserReviews } from '../services/reviewService';
@@ -82,9 +82,12 @@ const Profile = () => {
           </div>
           
           {isOwnProfile && (
-            <button className="mt-4 md:mt-0 flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+            <Link
+              to="/edit-profile"
+              className="mt-4 md:mt-0 flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+            >
               <FaEdit className="mr-2" /> Edit Profile
-            </button>
+            </Link>
           )}
         </div>
 
