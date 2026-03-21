@@ -88,32 +88,21 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section with Blur Background */}
+      {/* Hero Section with Image Background */}
       <div className="relative min-h-[500px] lg:min-h-[600px] overflow-hidden">
-        {/* Background Layer - Image 2 (Blurred Products) */}
+        {/* Background Layer - Hero image */}
         <div className="absolute inset-0">
-          {/* Blurred background image - products collage */}
           <img
             src="/images/hero-bg.jpg"
             alt=""
-            className="absolute inset-0 w-full h-full object-cover scale-110 blur-sm"
+            className="absolute inset-0 w-full h-full object-cover"
             onError={(e) => {
               e.target.style.display = 'none';
             }}
           />
-          {/* Fallback gradient if image not loaded */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
-
-          {/* Floating product shapes with blur effect */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-10 left-[10%] w-48 h-48 rounded-3xl bg-gradient-to-br from-sky-400 to-blue-600 opacity-30 blur-2xl transform rotate-12"></div>
-            <div className="absolute top-20 right-[15%] w-56 h-56 rounded-3xl bg-gradient-to-br from-violet-400 to-purple-600 opacity-25 blur-2xl transform -rotate-12"></div>
-            <div className="absolute bottom-20 left-[20%] w-64 h-64 rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-600 opacity-20 blur-2xl transform rotate-6"></div>
-            <div className="absolute bottom-10 right-[10%] w-52 h-52 rounded-3xl bg-gradient-to-br from-rose-400 to-pink-600 opacity-25 blur-2xl transform -rotate-6"></div>
-          </div>
 
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-900/70"></div>
+          <div className="absolute inset-0 bg-black/55"></div>
         </div>
 
         {/* Floating Product Images - Image 3 style (visible products) */}
