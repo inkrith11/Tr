@@ -1,7 +1,7 @@
 import os
 import logging
-import cloudinary
-import cloudinary.uploader
+#import cloudinary
+#import cloudinary.uploader
 from fastapi import UploadFile, HTTPException, status
 from typing import Optional
 import uuid
